@@ -1,0 +1,34 @@
+---
+title: "R Presentation and Plotly"
+author: "Ergin Ozcan"
+date: "01 11 2020"
+output:
+  slidy_presentation: default
+  ioslides_presentation: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+
+```{r, echo = TRUE}
+library(ggplot2)
+library(plotly)
+library(datasets)
+library(reshape2)
+```
+
+## 
+
+```{r}
+data("airquality") 
+airquality$Month=as.factor(airquality$Month)
+ozone_daily=airquality[,c(1,5,6)]
+ozone_daily=dcast(ozone_daily,Day~Month,value.var = "Ozone") 
+ozone_daily=as.matrix(ozone_daily[,-1])
+colnames(ozone_daily)=c("May","June","July","August","September")
+plot_ly(z=ozone_daily,colorscale="Hot",x=colnames(ozone_daily),type="heatmap",colorbar = list(title = "Ozone Levels (parts per billion)"))%>%layout(title = "Daily Ozone Levels in New York, May to September 1973", xaxis = list(title = "Month"),yaxis = list(title = "Day"))
+```
+
